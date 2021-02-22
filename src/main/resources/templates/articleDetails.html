@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head:: head"></head>
+<body>
+	<header th:replace="fragments/header:: header"></header>
+	<div class="row">
+		<nav th:replace="fragments/nav:: nav">
+		</nav>
+	</div>
+	<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Article [[${article.id}]]</h1>
+        
+	</div>
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<th:block th:each="lang,iter : ${languages}">
+		  <li class="nav-item" role="presentation">
+	    	<button th:if="${iter.index} == 0" class="nav-link active" data-bs-toggle="tab" 
+	    		th:attr="data-bs-target=${'#'+lang.shortname},aria-controls=${lang.shortname}" type="button" role="tab" 
+	    		aria-selected="true">[[${lang.name}]]</button>
+	    	<button th:unless="${iter.index} == 0" class="nav-link" data-bs-toggle="tab" 
+		    	th:attr="data-bs-target=${'#'+lang.shortname},aria-controls=${lang.shortname}" type="button" role="tab"
+				aria-selected="false">[[${lang.name}]]</button>
+		  </li>
+		</th:block>
+	</ul>
+	<div class="tab-content" id="myTabContent" >
+		<form>
+		<th:block th:each="lang,iter : ${languages}">
+			<div th:if="${iter.index} == 0" class="tab-pane fade show active" th:attr="id=${lang.shortname},aria-labelledby=${lang.shortname+'-tab'}" role="tabpanel">
+				<th:block th:each="content, iter : ${article.contents}">
+					<div th:if="${lang.id} == ${content.langid}">
+						
+						<div class="mb3">
+							<label th:attr="for=${'title-'+lang.id}" class="form-label">Email address</label>
+							<input type="text" class="form-control" th:value="${content.title}" th:attr="id=${'title-'+lang.id}">
+						</div>
+						<div class="mb3">
+							<label th:attr="for=${'subtitle-'+lang.id}" class="form-label">Email address</label>
+							<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'subtitle-'+lang.id}">
+						</div>
+						<div class="mb3">
+ 							<label th:attr="for=${'text-'+lang.id}" class="form-label">Example textarea</label>
+ 							<textarea class="form-control" th:attr="id=${'text-'+lang.id}" rows="3">[[${content.text}]]</textarea>
+						</div>
+					</div>
+				</th:block>
+			</div>
+			<div th:unless="${iter.index} == 0" class="tab-pane fade" th:attr="id=${lang.shortname},aria-labelledby=${lang.shortname+'-tab'}" role="tabpanel">
+				<th:block th:each="content, iter : ${article.contents}">
+					<div th:if="${lang.id} == ${content.langid}">
+						<label th:attr="for=${'title-'+lang.id}" class="form-label">Email address</label>
+						<input type="text" class="form-control" th:value="${content.title}" th:attr="id=${'title-'+lang.id}">
+						<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'title-'+lang.id}">
+						<input type="text" class="form-control" th:value="${content.text}" th:attr="id=${'title-'+lang.id}">
+					</div>
+				</th:block>
+			</div>
+		</th:block>
+		</form>
+	</div>
+	</main>
+	<footer th:replace="fragments/footer:: footer"></footer>
+</body>
+</html>

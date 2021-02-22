@@ -18,6 +18,7 @@
         		<tr th:each="article, iStat : ${articles}">
         			<td th:text="${article.authorid}" />
         			<td th:text="${article.title}" />
+        			<td><a th:href="@{/article/edit(id=${article.id})}">Edit</a></td>
         		</tr>
         	</tbody>
         </table>
