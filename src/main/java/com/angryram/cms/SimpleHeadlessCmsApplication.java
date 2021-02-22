@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SimpleHeadleasCmsApplication {
+public class SimpleHeadlessCmsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SimpleHeadleasCmsApplication.class, args);
+		SpringApplication.run(SimpleHeadlessCmsApplication.class, args);
 	}
 
 }
