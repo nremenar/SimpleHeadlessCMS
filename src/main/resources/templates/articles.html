@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head:: head"></head>
+<body>
+	<header th:replace="fragments/header:: header"></header>
+	<div class="row">
+		<nav th:replace="fragments/nav:: nav">
+		</nav>
+	</div>
+	<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Articles list</h1>
+        
+	</div>
+	<table>
+        	<tbody>
+        		<tr th:each="article, iStat : ${articles}">
+        			<td th:text="${article.authorid}" />
+        			<td th:text="${article.title}" />
+        		</tr>
+        	</tbody>
+        </table>
+	</main>
+	<footer th:replace="fragments/footer:: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head th:replace="fragments/head:: head"></head>
+
+<body>
+	<header th:replace="fragments/header:: header"></header>
+	<div class="row">
+		<nav th:replace="fragments/nav:: nav">
+		</nav>
+	</div>
+	<h1>Hello</h1>
+</body>
+	<script th:src="@{/js/script.js}"></script>
+</html>
