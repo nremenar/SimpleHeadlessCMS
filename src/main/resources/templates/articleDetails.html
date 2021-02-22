@@ -28,22 +28,17 @@
 	<div class="tab-content" id="myTabContent" >
 		<form>
 		<th:block th:each="lang,iter : ${languages}">
-			<div th:if="${iter.index} == 0" class="tab-pane fade show active" th:attr="id=${lang.shortname},aria-labelledby=${lang.shortname+'-tab'}" role="tabpanel">
+			<div th:if="${iter.index} == 0" class="tab-pane fade show active" 
+			th:attr="id=${lang.shortname},aria-labelledby=${lang.shortname+'-tab'}" 
+			role="tabpanel">
 				<th:block th:each="content, iter : ${article.contents}">
 					<div th:if="${lang.id} == ${content.langid}">
-						
-						<div class="mb3">
 							<label th:attr="for=${'title-'+lang.id}" class="form-label">Email address</label>
 							<input type="text" class="form-control" th:value="${content.title}" th:attr="id=${'title-'+lang.id}">
-						</div>
-						<div class="mb3">
 							<label th:attr="for=${'subtitle-'+lang.id}" class="form-label">Email address</label>
 							<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'subtitle-'+lang.id}">
-						</div>
-						<div class="mb3">
- 							<label th:attr="for=${'text-'+lang.id}" class="form-label">Example textarea</label>
+							<label th:attr="for=${'text-'+lang.id}" class="form-label">Example textarea</label>
  							<textarea class="form-control" th:attr="id=${'text-'+lang.id}" rows="3">[[${content.text}]]</textarea>
-						</div>
 					</div>
 				</th:block>
 			</div>
@@ -52,8 +47,8 @@
 					<div th:if="${lang.id} == ${content.langid}">
 						<label th:attr="for=${'title-'+lang.id}" class="form-label">Email address</label>
 						<input type="text" class="form-control" th:value="${content.title}" th:attr="id=${'title-'+lang.id}">
-						<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'title-'+lang.id}">
-						<input type="text" class="form-control" th:value="${content.text}" th:attr="id=${'title-'+lang.id}">
+						<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'subtitle-'+lang.id}">
+						<input type="text" class="form-control" th:value="${content.text}" th:attr="id=${'text-'+lang.id}">
 					</div>
 				</th:block>
 			</div>
