@@ -4,7 +4,7 @@ public class ContentDto {
 	private Integer id;
 	private Integer articleid;
 	private String text;
-	private String langid;
+	private Integer langid;
 	private String title;
 	private String subtitle;
 	
@@ -29,10 +29,10 @@ public class ContentDto {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public String getLangid() {
+	public Integer getLangid() {
 		return langid;
 	}
-	public void setLangid(String langid) {
+	public void setLangid(Integer langid) {
 		this.langid = langid;
 	}
 	public String getTitle() {

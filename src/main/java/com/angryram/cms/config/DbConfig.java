@@ -33,7 +33,7 @@ public class DbConfig {
 	@Autowired
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource(); 
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		dataSource.setUrl(iEnv.getProperty("cms.datasource.url"));
 	    dataSource.setUsername(iEnv.getProperty("cms.datasource.username"));
 	    dataSource.setPassword(iEnv.getProperty("cms.datasource.password"));

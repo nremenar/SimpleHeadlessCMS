@@ -26,7 +26,8 @@
 		</th:block>
 	</ul>
 	<div class="tab-content" id="myTabContent" >
-		<form>
+		<form action="#" method="post" th:action="@{/article/save}" id="articleForm" name="articleForm">
+			<input type="hidden" th:value="${article.id}" name="articleId">
 		<th:block th:each="lang,iter : ${languages}">
 			<div th:if="${iter.index} == 0" class="tab-pane fade show active" 
 			th:attr="id=${lang.shortname},aria-labelledby=${lang.shortname+'-tab'}" 
@@ -34,11 +35,11 @@
 				<th:block th:each="content, iter : ${article.contents}">
 					<div th:if="${lang.id} == ${content.langid}">
 							<label th:attr="for=${'title-'+lang.id}" class="form-label">Email address</label>
-							<input type="text" class="form-control" th:value="${content.title}" th:attr="id=${'title-'+lang.id}">
+							<input type="text" class="form-control" th:value="${content.title}" th:attr="id=${'title-'+lang.id}" th:name="${'title-'+lang.id}">
 							<label th:attr="for=${'subtitle-'+lang.id}" class="form-label">Email address</label>
-							<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'subtitle-'+lang.id}">
+							<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'subtitle-'+lang.id}" th:name="${'subtitle-'+lang.id}">
 							<label th:attr="for=${'text-'+lang.id}" class="form-label">Example textarea</label>
- 							<textarea class="form-control" th:attr="id=${'text-'+lang.id}" rows="3">[[${content.text}]]</textarea>
+ 							<textarea class="form-control" th:attr="id=${'text-'+lang.id}" th:name="${'text-'+lang.id}" rows="3">[[${content.text}]]</textarea>
 					</div>
 				</th:block>
 			</div>
@@ -46,13 +47,16 @@
 				<th:block th:each="content, iter : ${article.contents}">
 					<div th:if="${lang.id} == ${content.langid}">
 						<label th:attr="for=${'title-'+lang.id}" class="form-label">Email address</label>
-						<input type="text" class="form-control" th:value="${content.title}" th:attr="id=${'title-'+lang.id}">
-						<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'subtitle-'+lang.id}">
-						<input type="text" class="form-control" th:value="${content.text}" th:attr="id=${'text-'+lang.id}">
+						<input type="text" class="form-control" th:value="${content.title}" th:attr="id=${'title-'+lang.id}" th:name="${'title-'+lang.id}">
+						<label th:attr="for=${'subtitle-'+lang.id}" class="form-label">Email address</label>
+						<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'subtitle-'+lang.id}" th:name="${'subtitle-'+lang.id}">
+						<label th:attr="for=${'text-'+lang.id}" class="form-label">Example textarea</label>
+						<textarea class="form-control" th:attr="id=${'text-'+lang.id}" th:name="${'text-'+lang.id}" rows="3">[[${content.text}]]</textarea>
 					</div>
 				</th:block>
 			</div>
 		</th:block>
+			<button type="submit" class="btn btn-primary">Save</button>
 		</form>
 	</div>
 	</main>
