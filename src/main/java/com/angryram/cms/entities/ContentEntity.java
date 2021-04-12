@@ -6,12 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Data
+@Builder
 @Table(name="content")
 public class ContentEntity {
 	
@@ -29,6 +31,15 @@ public class ContentEntity {
 	private String subtitle;
 	@Getter @Setter 
 	private String title;
-	
-	
+
+
+	public ContentEntity() {}
+	public ContentEntity(Integer id, Integer articleid, String text, Integer langid, String subtitle, String title) {
+		this.id = id;
+		this.articleid = articleid;
+		this.text = text;
+		this.langid = langid;
+		this.subtitle = subtitle;
+		this.title = title;
+	}
 }

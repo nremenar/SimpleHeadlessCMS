@@ -2,7 +2,10 @@ package com.angryram.cms.service.impl;
 
 import com.angryram.cms.dto.ContentDto;
 import com.angryram.cms.entities.ArticleEntity;
+import com.angryram.cms.entities.ContentEntity;
 import com.angryram.cms.entities.LanguageEntity;
+import com.angryram.cms.repository.ArticleRepository;
+import com.angryram.cms.repository.ContentRepository;
 import com.angryram.cms.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,12 @@ public class ArticleServiceImpl implements ArticleService{
 	@Autowired
 	LanguageRepository languages;
 
+	@Autowired
+	ArticleRepository articleRepository;
+
+	@Autowired
+	ContentRepository contentRepository;
+
 	@Override
 	public ArticleDto getById(Integer id) {
 		ArticleDto article = articleDao.getById(id);
@@ -62,22 +71,20 @@ public class ArticleServiceImpl implements ArticleService{
 	public void saveArticle(Map<String, String> params) {
 		List<LanguageEntity> langs  = languages.findAll();
 
-		if(true
-			//params.get("articleId") == null || params.get("articleId").equals("")
-		 ){
-
-			List<ContentDto> contents = langs.stream().map(
-					n -> ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
+		if(params.get("articleId") == null || params.get("articleId").equals("")){
+			Integer articleid = articleRepository.save(ArticleEntity.builder().authorid(1).categoryid(1).build()).getId();
+			contentRepository.saveAll(langs.stream().map(
+					n -> ContentEntity.builder().articleid(Integer.valueOf(params.get("articleId")))
 							.title(params.get("title-"+n.getId()))
 							.subtitle(params.get("subtitle-"+n.getId()))
 							.text(params.get("text-"+n.getId()))
 							.langid(n.getId())
+							.articleid(articleid)
 							.build()
-			).collect(Collectors.toList());
-			ArticleDto article = ArticleDto.builder().contents(contents).authorid(1).categoryid(1).build();
+			).collect(Collectors.toList()));
+
 		}
 		else{
-
 			List<ContentDto> contents = langs.stream().map(
 					n -> ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
 							.title(params.get("title-"+n.getId()))
@@ -86,7 +93,9 @@ public class ArticleServiceImpl implements ArticleService{
 							.langid(n.getId())
 							.build()
 			).collect(Collectors.toList());
-			contentDao.getByArticleId(Integer.valueOf(params.get("articleId")));
+
+
+			articleRepository.save(ArticleEntity.builder().id(Integer.valueOf(params.get("articleid"))).build());
 		}
 	}
 }

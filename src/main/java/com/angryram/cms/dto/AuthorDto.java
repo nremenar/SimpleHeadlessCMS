@@ -2,15 +2,15 @@ package com.angryram.cms.dto;
 
 public class AuthorDto {
 	
-	private Integer id;
+	private Integer authorid;
 	private String name;
 	private String email;
 	
 	public Integer getId() {
-		return id;
+		return authorid;
 	}
 	public void setId(Integer id) {
-		this.id = id;
+		this.authorid = id;
 	}
 	public String getName() {
 		return name;
