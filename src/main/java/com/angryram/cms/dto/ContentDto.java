@@ -1,5 +1,10 @@
 package com.angryram.cms.dto;
 
+import lombok.Builder;
+import lombok.Getter;
+
+
+@Builder
 public class ContentDto {
 	private Integer id;
 	private Integer articleid;
@@ -10,7 +15,16 @@ public class ContentDto {
 	
 	
 	public ContentDto() {};
-	
+
+	public ContentDto(Integer id, Integer articleid, String text, Integer langid, String title, String subtitle) {
+		this.id = id;
+		this.articleid = articleid;
+		this.text = text;
+		this.langid = langid;
+		this.title = title;
+		this.subtitle = subtitle;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -47,8 +61,6 @@ public class ContentDto {
 	public void setSubtitle(String subtitle) {
 		this.subtitle = subtitle;
 	}
-	
-	
-	
-	
+
+
 }

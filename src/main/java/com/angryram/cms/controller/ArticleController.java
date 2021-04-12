@@ -40,7 +40,9 @@ public class ArticleController {
 	@PostMapping("/save")
 	public ModelAndView Save(@RequestParam Map<String, String> reqParam) {
 
-		Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+		articleService.saveArticle(reqParam);
+
+		Pageable firstPageWithTwoElements = PageRequest.of(0, 10);
 		List<ArticleEntity> t = articleRepository.getAllByLangIdPagable(1, firstPageWithTwoElements);
 		ModelAndView model = new ModelAndView();
 		model.addObject("articles", t);

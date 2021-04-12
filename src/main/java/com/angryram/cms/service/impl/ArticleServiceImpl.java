@@ -1,6 +1,7 @@
 package com.angryram.cms.service.impl;
 
 import com.angryram.cms.dto.ContentDto;
+import com.angryram.cms.entities.ArticleEntity;
 import com.angryram.cms.entities.LanguageEntity;
 import com.angryram.cms.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,7 @@ import com.angryram.cms.dto.ArticleDto;
 import com.angryram.cms.repository.AuthorRepository;
 import com.angryram.cms.service.ArticleService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -54,6 +53,30 @@ public class ArticleServiceImpl implements ArticleService{
 		article.setContents(contents);
 		article.setAuthor(authorRepository.findById(article.getAuthorid()));
 		return article;
+
+	}
+
+	@Override
+	public void saveArticle(Map<String, String> params) {
+		List<LanguageEntity> langs  = languages.findAll();
+		ArticleDto article = new ArticleDto();
+
+		List<ContentDto> contents = new ArrayList<>();
+
+
+		for(LanguageEntity lang : langs){
+			System.out.print("title-"+lang.getId());
+			System.out.print(params.get("title-"+lang.getId()));
+			contents.add(ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
+					.title(params.get("title-"+lang.getId()))
+					.subtitle(params.get("subtitle-"+lang.getId()))
+					.text(params.get("text-"+lang.getId()))
+					.langid(lang.getId())
+					.build());
+		}
+
+		System.out.print(contents.size());
+
 
 	}
 }
