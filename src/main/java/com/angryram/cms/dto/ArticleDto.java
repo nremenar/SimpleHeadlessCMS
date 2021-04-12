@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.angryram.cms.entities.AuthorEntity;
+import lombok.Builder;
 
+@Builder
 public class ArticleDto {
 	private Integer id;
 	private Integer authorid;
@@ -81,7 +83,17 @@ public class ArticleDto {
 	public void setAuthor(Optional<AuthorEntity> optional) {
 		this.author = optional;
 	}
-	
-	
-	
+
+	public ArticleDto(Integer id, Integer authorid, Integer categoryid, Integer mainimgid, Date created, Date publishdate, List<ContentDto> contents, Optional<AuthorEntity> author) {
+		this.id = id;
+		this.authorid = authorid;
+		this.categoryid = categoryid;
+		this.mainimgid = mainimgid;
+		this.created = created;
+		this.publishdate = publishdate;
+		this.contents = contents;
+		this.author = author;
+	}
+
+	public ArticleDto(){}
 }

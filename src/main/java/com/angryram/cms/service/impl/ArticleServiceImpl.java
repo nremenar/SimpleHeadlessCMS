@@ -13,7 +13,9 @@ import com.angryram.cms.dto.ArticleDto;
 import com.angryram.cms.repository.AuthorRepository;
 import com.angryram.cms.service.ArticleService;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -59,24 +61,32 @@ public class ArticleServiceImpl implements ArticleService{
 	@Override
 	public void saveArticle(Map<String, String> params) {
 		List<LanguageEntity> langs  = languages.findAll();
-		ArticleDto article = new ArticleDto();
 
-		List<ContentDto> contents = new ArrayList<>();
+		if(true
+			//params.get("articleId") == null || params.get("articleId").equals("")
+		 ){
 
-
-		for(LanguageEntity lang : langs){
-			System.out.print("title-"+lang.getId());
-			System.out.print(params.get("title-"+lang.getId()));
-			contents.add(ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
-					.title(params.get("title-"+lang.getId()))
-					.subtitle(params.get("subtitle-"+lang.getId()))
-					.text(params.get("text-"+lang.getId()))
-					.langid(lang.getId())
-					.build());
+			List<ContentDto> contents = langs.stream().map(
+					n -> ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
+							.title(params.get("title-"+n.getId()))
+							.subtitle(params.get("subtitle-"+n.getId()))
+							.text(params.get("text-"+n.getId()))
+							.langid(n.getId())
+							.build()
+			).collect(Collectors.toList());
+			ArticleDto article = ArticleDto.builder().contents(contents).authorid(1).categoryid(1).build();
 		}
+		else{
 
-		System.out.print(contents.size());
-
-
+			List<ContentDto> contents = langs.stream().map(
+					n -> ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
+							.title(params.get("title-"+n.getId()))
+							.subtitle(params.get("subtitle-"+n.getId()))
+							.text(params.get("text-"+n.getId()))
+							.langid(n.getId())
+							.build()
+			).collect(Collectors.toList());
+			contentDao.getByArticleId(Integer.valueOf(params.get("articleId")));
+		}
 	}
 }
