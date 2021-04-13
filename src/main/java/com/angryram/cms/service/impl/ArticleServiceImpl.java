@@ -68,23 +68,33 @@ public class ArticleServiceImpl implements ArticleService{
 
 	@Override
 	public void saveArticle(Map<String, String> params) {
-		List<LanguageEntity> langs  = languages.findAll();
-
 		if(params.get("articleId") == null || params.get("articleId").equals("")){
-			Integer articleid = articleRepository.save(ArticleEntity.builder().authorid(1).categoryid(1).build()).getId();
-			contentRepository.saveAll(langs.stream().map(
-					n -> ContentEntity.builder().articleid(Integer.valueOf(params.get("articleId")))
-							.title(params.get("title-"+n.getId()))
-							.subtitle(params.get("subtitle-"+n.getId()))
-							.text(params.get("text-"+n.getId()))
-							.langid(n.getId())
-							.articleid(articleid)
-							.build()
-			).collect(Collectors.toList()));
+			List<LanguageEntity> langs  = languages.findAll();
+			List<ContentEntity> contents = langs.stream().map(
+					n -> {
+						if(!(params.get("title-"+n.getId()).isEmpty() && params.get("subtitle-"+n.getId()).isEmpty() && params.get("text-"+n.getId()).isEmpty())){
+							return ContentEntity.builder()
+									.title(params.get("title-"+n.getId()))
+									.subtitle(params.get("subtitle-"+n.getId()))
+									.text(params.get("text-"+n.getId()))
+									.langid(n.getId())
+									.build();
+						}
+						return null;
+					}
+			).collect(Collectors.toList());
+			contents.removeAll(Collections.singleton(null));
+			if(contents.size() > 0){
+				Integer articleid = articleRepository.save(ArticleEntity.builder().authorid(1).categoryid(1).build()).getId();
+				contents.forEach(n -> n.setArticleid(articleid));
+				contentRepository.saveAll(contents);
+			}
 		}
 		else{
-			langs.stream().map(
+			List<LanguageEntity> langs  = languages.findAll();
+			langs.forEach(
 					n -> {
+						System.out.print(n.getName());
 						try {
 							ContentDto existing = contentDao.getByArticleIdAndLangId(Integer.valueOf(params.get("articleId")), n.getId());
 							existing.setSubtitle(params.get("subtitle-"+n.getId()));
@@ -97,27 +107,30 @@ public class ArticleServiceImpl implements ArticleService{
 									.subtitle(existing.getSubtitle())
 									.text(existing.getText())
 									.langid(n.getId())
+									.id(existing.getId())
 									.build()
 							);
 						}
 						catch (Exception e){
-							ContentDto t = ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
-									.title(params.get("title-"+n.getId()))
-									.subtitle(params.get("subtitle-"+n.getId()))
-									.text(params.get("text-"+n.getId()))
-									.langid(n.getId())
-									.build();
-							contentRepository.save(
-									ContentEntity.builder()
-									.articleid(Integer.valueOf(params.get("articleId")))
-									.title(params.get("title-"+n.getId()))
-									.subtitle(params.get("subtitle-"+n.getId()))
-									.text(params.get("text-"+n.getId()))
-									.langid(n.getId())
-									.build()
-							);
+
+							if(!(params.get("title-"+n.getId()).isEmpty() && params.get("subtitle-"+n.getId()).isEmpty() && params.get("text-"+n.getId()).isEmpty())){
+								ContentDto t = ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
+										.title(params.get("title-"+n.getId()))
+										.subtitle(params.get("subtitle-"+n.getId()))
+										.text(params.get("text-"+n.getId()))
+										.langid(n.getId())
+										.build();
+								contentRepository.save(
+										ContentEntity.builder()
+												.articleid(Integer.valueOf(params.get("articleId")))
+												.title(params.get("title-"+n.getId()))
+												.subtitle(params.get("subtitle-"+n.getId()))
+												.text(params.get("text-"+n.getId()))
+												.langid(n.getId())
+												.build()
+								);
+							}
 						}
-						return null;
 					}
 			);
 		}

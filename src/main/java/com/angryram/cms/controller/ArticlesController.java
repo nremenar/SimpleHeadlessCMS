@@ -24,7 +24,7 @@ public class ArticlesController {
 	
 	@GetMapping("/articles")
 	public ModelAndView listallarticles() {
-		Pageable firstPageWithTwoElements = PageRequest.of(0, 10);
+		Pageable firstPageWithTwoElements = PageRequest.of(0, 50);
 		List<ArticleEntity> t = (List<ArticleEntity>) articleRepository.getAllByLangIdPagable(1, firstPageWithTwoElements);
 		ModelAndView model = new ModelAndView();
 		model.addObject("articles", t);
