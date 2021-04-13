@@ -25,23 +25,22 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleServiceImpl implements ArticleService{
 	
-	@Autowired 
-	ArticleDao articleDao;
-	
-	@Autowired
-	ContentDao contentDao;
-	
-	@Autowired
-	AuthorRepository authorRepository;
+	private final ArticleDao articleDao;
+	private final ContentDao contentDao;
+	private final AuthorRepository authorRepository;
+	private final LanguageRepository languages;
+	private final ArticleRepository articleRepository;
+	private final ContentRepository contentRepository;
 
 	@Autowired
-	LanguageRepository languages;
-
-	@Autowired
-	ArticleRepository articleRepository;
-
-	@Autowired
-	ContentRepository contentRepository;
+	public ArticleServiceImpl(ArticleDao articleDao, ContentDao contentDao, AuthorRepository authorRepository, LanguageRepository languages, ArticleRepository articleRepository, ContentRepository contentRepository){
+		this.articleDao = articleDao;
+		this.contentDao = contentDao;
+		this.authorRepository = authorRepository;
+		this.languages = languages;
+		this.articleRepository = articleRepository;
+		this.contentRepository = contentRepository;;
+	}
 
 	@Override
 	public ArticleDto getById(Integer id) {
@@ -82,20 +81,45 @@ public class ArticleServiceImpl implements ArticleService{
 							.articleid(articleid)
 							.build()
 			).collect(Collectors.toList()));
-
 		}
 		else{
-			List<ContentDto> contents = langs.stream().map(
-					n -> ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
-							.title(params.get("title-"+n.getId()))
-							.subtitle(params.get("subtitle-"+n.getId()))
-							.text(params.get("text-"+n.getId()))
-							.langid(n.getId())
-							.build()
-			).collect(Collectors.toList());
-
-
-			articleRepository.save(ArticleEntity.builder().id(Integer.valueOf(params.get("articleid"))).build());
+			langs.stream().map(
+					n -> {
+						try {
+							ContentDto existing = contentDao.getByArticleIdAndLangId(Integer.valueOf(params.get("articleId")), n.getId());
+							existing.setSubtitle(params.get("subtitle-"+n.getId()));
+							existing.setTitle(params.get("title-"+n.getId()));
+							existing.setText(params.get("text-"+n.getId()));
+							contentRepository.save(
+									ContentEntity.builder()
+									.articleid(existing.getArticleid())
+									.title(existing.getTitle())
+									.subtitle(existing.getSubtitle())
+									.text(existing.getText())
+									.langid(n.getId())
+									.build()
+							);
+						}
+						catch (Exception e){
+							ContentDto t = ContentDto.builder().articleid(Integer.valueOf(params.get("articleId")))
+									.title(params.get("title-"+n.getId()))
+									.subtitle(params.get("subtitle-"+n.getId()))
+									.text(params.get("text-"+n.getId()))
+									.langid(n.getId())
+									.build();
+							contentRepository.save(
+									ContentEntity.builder()
+									.articleid(Integer.valueOf(params.get("articleId")))
+									.title(params.get("title-"+n.getId()))
+									.subtitle(params.get("subtitle-"+n.getId()))
+									.text(params.get("text-"+n.getId()))
+									.langid(n.getId())
+									.build()
+							);
+						}
+						return null;
+					}
+			);
 		}
 	}
 }

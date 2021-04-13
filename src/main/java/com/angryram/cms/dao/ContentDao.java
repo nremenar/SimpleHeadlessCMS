@@ -6,4 +6,5 @@ import com.angryram.cms.dto.ContentDto;
 
 public interface ContentDao {
 	List<ContentDto> getByArticleId(Integer id);
+	ContentDto getByArticleIdAndLangId(Integer articleId, Integer langId);
 }

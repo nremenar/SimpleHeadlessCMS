@@ -10,9 +10,13 @@ import com.angryram.cms.dto.ArticleDto;
 
 @Repository
 public class ArticleDaoImpl implements ArticleDao{
-	
+
+	private final JdbcTemplate jdbcTemplate;
+
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	public ArticleDaoImpl(JdbcTemplate jdbcTemplate){
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
 	@Override
 	public ArticleDto getById(Integer id) {
