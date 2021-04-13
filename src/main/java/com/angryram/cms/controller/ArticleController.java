@@ -29,7 +29,7 @@ public class ArticleController {
 	ArticleRepository articleRepository;
 	
 	@GetMapping("/edit")
-	public ModelAndView listallarticles(@RequestParam Integer id) {
+	public ModelAndView articleDetails(@RequestParam Integer id) {
 		ModelAndView model = new ModelAndView();
 		model.addObject("article", articleService.getById(id));
 		model.addObject("languages", languages.findAll());
@@ -37,8 +37,16 @@ public class ArticleController {
 		return model;
 	}
 
+	@GetMapping("/new")
+	public ModelAndView articleNew() {
+		ModelAndView model = new ModelAndView();
+		model.addObject("languages", languages.findAll());
+		model.setViewName("articleNew");
+		return model;
+	}
+
 	@PostMapping("/save")
-	public ModelAndView Save(@RequestParam Map<String, String> reqParam) {
+	public ModelAndView saveArticle(@RequestParam Map<String, String> reqParam) {
 
 		articleService.saveArticle(reqParam);
 
