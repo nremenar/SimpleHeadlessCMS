@@ -16,8 +16,13 @@ import com.angryram.cms.repository.LanguageRepository;
 @RequestMapping("/public")
 public class LanguageRest {
 	
+
+	private final LanguageRepository languageRepository;
+
 	@Autowired
-	LanguageRepository languageRepository;
+	public LanguageRest(LanguageRepository languageRepository){
+		this.languageRepository = languageRepository;
+	}
 	
 	@GetMapping(value = "/getlanguages")
 	public List<LanguageEntity> getAllArticles(){

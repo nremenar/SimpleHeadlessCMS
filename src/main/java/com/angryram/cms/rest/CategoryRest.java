@@ -11,9 +11,13 @@ import com.angryram.cms.repository.CategoryNameRepository;
 
 @RestController
 public class CategoryRest {
-	
+
+	private final CategoryNameRepository categoryNameRepository;
+
 	@Autowired
-	private CategoryNameRepository categoryNameRepository;
+	public  CategoryRest(CategoryNameRepository categoryNameRepository){
+		this.categoryNameRepository = categoryNameRepository;
+	}
 	
 	@GetMapping(value = "/public/getallcategories")
 	public List<CategoryNameEntity> getAllCategoriesByLang(@RequestParam Integer langid){
