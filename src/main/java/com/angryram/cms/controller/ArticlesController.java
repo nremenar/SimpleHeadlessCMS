@@ -19,8 +19,13 @@ import com.angryram.cms.repository.ArticleRepository;
 @Controller
 public class ArticlesController {
 
+	private final ArticleRepository articleRepository;
+
 	@Autowired
-	ArticleRepository articleRepository;
+	public ArticlesController(ArticleRepository articleRepository){
+		this.articleRepository = articleRepository;
+
+	}
 	
 	@GetMapping("/articles")
 	public ModelAndView listallarticles() {
