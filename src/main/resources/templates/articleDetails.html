@@ -26,7 +26,7 @@
 		</th:block>
 	</ul>
 	<div class="tab-content" id="myTabContent" >
-		<form action="#" method="post" th:action="@{/article/save}" id="articleForm" name="articleForm">
+		<form method="post" th:action="@{/article/save}" id="articleForm" name="articleForm">
 			<input type="hidden" th:value="${article.id}" name="articleId">
 		<th:block th:each="lang,iter : ${languages}">
 			<div th:if="${iter.index} == 0" class="tab-pane fade show active" 
@@ -40,6 +40,7 @@
 							<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'subtitle-'+lang.id}" th:name="${'subtitle-'+lang.id}">
 							<label th:attr="for=${'text-'+lang.id}" class="form-label">Example textarea</label>
  							<textarea class="form-control" th:attr="id=${'text-'+lang.id}" th:name="${'text-'+lang.id}" rows="3">[[${content.text}]]</textarea>
+							<div id="editorjs"></div>
 					</div>
 				</th:block>
 			</div>
@@ -52,14 +53,35 @@
 						<input type="text" class="form-control" th:value="${content.subtitle}" th:attr="id=${'subtitle-'+lang.id}" th:name="${'subtitle-'+lang.id}">
 						<label th:attr="for=${'text-'+lang.id}" class="form-label">Example textarea</label>
 						<textarea class="form-control" th:attr="id=${'text-'+lang.id}" th:name="${'text-'+lang.id}" rows="3">[[${content.text}]]</textarea>
+						<div id="editorjs"></div>
 					</div>
 				</th:block>
 			</div>
 		</th:block>
-			<button type="submit" class="btn btn-primary">Save</button>
+			<button type="submit" class="btn btn-primary" style="z-index:10000;position:relative">Save</button>
 		</form>
 	</div>
 	</main>
 	<footer th:replace="fragments/footer:: footer"></footer>
+	<script>
+		var editor = new EditorJS({
+			holder: 'editorjs',
+			placeholder:'Create your page',
+			onReady: () => {
+				console.log('Editor.js is ready to work!')
+			}
+		});
+
+		$('.btn').on('click', (e) => {
+			e.preventDefault();
+			editor.save().then((outputData) => {{
+				console.log(outputData.blocks);
+				$('#text-1').text(JSON.stringify(outputData.blocks));
+				$('#articleForm').submit();
+				console.log('Saved')}
+			});
+			//debugger;
+		})
+	</script>
 </body>
 </html>

@@ -26,7 +26,7 @@
     </th:block>
   </ul>
   <div class="tab-content" id="myTabContent" >
-    <form action="#" method="post" th:action="@{/article/save}" id="articleForm" name="articleForm">
+    <form method="post" th:action="@{/article/save}" id="articleForm" name="articleForm">
       <input type="hidden" name="articleId">
       <th:block th:each="lang,iter : ${languages}">
         <div th:if="${iter.index} == 0" class="tab-pane fade show active"
@@ -38,7 +38,6 @@
               <input type="text" class="form-control" th:attr="id=${'subtitle-'+lang.id}" th:name="${'subtitle-'+lang.id}">
               <label th:attr="for=${'text-'+lang.id}" class="form-label">Example textarea</label>
               <textarea class="form-control" th:attr="id=${'text-'+lang.id}" th:name="${'text-'+lang.id}" rows="3"></textarea>
-
         </div>
         <div th:unless="${iter.index} == 0" class="tab-pane fade" th:attr="id=${lang.shortname},aria-labelledby=${lang.shortname+'-tab'}" role="tabpanel">
             <label th:attr="for=${'title-'+lang.id}" class="form-label">Email address</label>
